@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+}
+
+.site-header {
+    background-color: #60a917;
+    color: white;
+    padding: 20px 30px;
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.site-header p {
+    margin: 5px 0 0;
+}
+
+.navbar {
+    background-color: #d5e8d4;
+    padding: 12px 25px;
+}
+
+.navbar a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 25px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.home-container {
+    max-width: 900px;
+    margin: 50px auto;
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    color: black;
+}
+
+.home-text {
+    flex: 1;
+}
+
+.home-text h2,
+.home-text h3 {
+    margin-top: 0;
+}
+
+.home-images {
+    display:flex;
+    width: 260px;
+    flex-direction: column;
+}
+.bird-image {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    object-fit: cover;
+    
+}
+.image-box {
+    width: 300px;
+    height: 200px;
+    overflow: hidden;       /* hide the image overflow */
+    border: 2px solid #82b366;
+    margin: 5px;
+}
+.image-placeholder {
+    height: 160px;
+    background-color: #d5e8d4;
+    color: #333;
+    border: 2px solid #82b366;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
