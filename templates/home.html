@@ -1,4 +1,47 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+ <main class="home-container">
+        <section class="home-text">
+            <h2>Why are we studying birds?</h2>
+
+            <p>
+                The CEA and CTO are working together to collect bird sighting data
+                from residents across Centrala to assist in urban planning, and 
+                 to create positive change and encourage more wildlife (including birds) into Centrala.
+            </p>
+<P>
+  Living spaces with access to nature, and in particular birds, can have many 
+  positive effects on the residents mental health and physical wellbeing.
+</P>
+            <p>
+                This information will help build a clearer picture of bird activity
+                in urban and suburban areas.
+            </p>
+
+            <h3>Next steps</h3>
+            <p>
+                <ul>
+                    <li>Register for an account or login to start submitting your bird sightings</li>
+                    <li>Use the 'New Post' page to submit your bird sightings, including photos and location data</li>
+                    <li>View other residents' sightings on the 'View Posts' page, you will be able to edit and delete your own posts</li> 
+                </ul>
+            </p>
+        </section>
+        <section class="home-images">
+          <div class ="image-box">
+            <img src="{{ url_for('static', filename='images/chris-smith-ZeIFgSO3MAU-unsplash.jpg') }}" alt="Bird" class="bird-image">
+          </div>
+          
+          <div class ="image-box">
+            <img src="{{ url_for('static', filename='images/doncoombez-5fcvoU3V3Ic-unsplash.jpg') }}" alt="Bird" class="bird-image">
+        </section>
+    </main>
+{% endblock %}
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,9 +70,13 @@
 
             <p>
                 The CEA and CTO are working together to collect bird sighting data
-                from residents across Centrala.
+                from residents across Centrala to assist in urban planning, and 
+                 to create positive change and encourage more wildlife (including birds) into Centrala.
             </p>
-
+<P>
+  Living spaces with access to nature, and in particular birds, can have many 
+  positive effects on the residents mental health and physical wellbeing.
+</P>
             <p>
                 This information will help build a clearer picture of bird activity
                 in urban and suburban areas.
@@ -37,8 +84,11 @@
 
             <h3>Next steps</h3>
             <p>
-                Users can register, log in, create a new bird sighting post, and view
-                posts submitted by other users.
+                <ul>
+                    <li>Register for an account or login to start submitting your bird sightings</li>
+                    <li>Use the 'New Post' page to submit your bird sightings, including photos and location data</li>
+                    <li>View other residents' sightings on the 'View Posts' page, you will be able to edit and delete your own posts</li> 
+                </ul>
             </p>
         </section>
         <section class="home-images">
@@ -52,4 +102,4 @@
     </main>
 
 </body>
-</html>
+</html> -->
