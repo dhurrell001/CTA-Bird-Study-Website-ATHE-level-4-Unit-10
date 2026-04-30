@@ -1,3 +1,4 @@
+/* ================ CSS for heading and Navbar =================  */
 * {
     box-sizing: border-box;
 }
@@ -38,7 +39,7 @@ body {
 .navbar a:hover {
     text-decoration: underline;
 }
-
+/*  The main container to be used on every page ============ */
 .home-container {
     max-width: 900px;
     margin: 50px auto;
@@ -56,7 +57,7 @@ body {
 .home-text h3 {
     margin-top: 0;
 }
-
+/*  =============== CSS for home page content ============ */
 .home-images {
     display:flex;
     width: 260px;
@@ -76,14 +77,4 @@ body {
     border: 2px solid #82b366;
     margin: 5px;
 }
-.image-placeholder {
-    height: 160px;
-    background-color: #d5e8d4;
-    color: #333;
-    border: 2px solid #82b366;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
+/* =============== CSS for login page ============ */
