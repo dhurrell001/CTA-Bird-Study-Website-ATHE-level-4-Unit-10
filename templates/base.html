@@ -1,0 +1,29 @@
+<!-- This is the base template for the CEA Bird Study website. It will be used
+ on all pages to reduce code duplication -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}CEA Bird Study{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+        <h1>CEA Bird Study</h1>
+        <p>Partnered with the Centrala Trust for Ornithology</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/new-post">New Post</a>
+        <a href="/posts">View Posts</a>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </nav>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>
