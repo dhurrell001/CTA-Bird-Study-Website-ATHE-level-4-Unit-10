@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-
+<!-- Title and Navigation   -->
 <header class="site-header">
         <h1>CEA Bird Study</h1>
         <p>Partnered with the Centrala Trust for Ornithology</p>
@@ -20,7 +20,7 @@
         <a href="/register">Register</a>
         <a href="/login">Login</a>
     </nav>
-
+<!-- Main Content will be inserted here from child page templates -->
 <main>
     {% block content %}{% endblock %}
 </main>

@@ -1,0 +1,45 @@
+<!-- Register Page containing the registration form, users can create a new account -->
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<!-- page sub-heading -->
+<div class="page-sub-heading">
+    <h2>Create Account</h2>
+</div>
+
+<!-- container for the registration form -->
+<div class="form-container">
+
+    <!-- Form collects new user account details -->
+    <form>
+
+        <div class="input-container">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username">
+        </div>
+
+        <div class="input-container">
+            <label for="email">Email address:</label>
+            <input type="email" id="email" name="email" placeholder="Email address">
+        </div>
+
+        <div class="input-container">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Password">
+        </div>
+
+        <div class="input-container">
+            <label for="confirm-password">Confirm password:</label>
+            <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm password">
+        </div>
+
+        <button type="submit" class="form-button">Register</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

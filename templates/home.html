@@ -1,9 +1,11 @@
+   <!-- Home page, contaning description of the project, next steps, and home page images -->
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
  <main class="home-container">
+    <!-- Home Text Section -->
         <section class="home-text">
             <h2>Why are we studying birds?</h2>
 
@@ -30,6 +32,7 @@
                 </ul>
             </p>
         </section>
+        <!-- Image Section -->
         <section class="home-images">
           <div class ="image-box">
             <img src="{{ url_for('static', filename='images/chris-smith-ZeIFgSO3MAU-unsplash.jpg') }}" alt="Bird" class="bird-image">

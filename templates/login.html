@@ -1,10 +1,29 @@
+<!-- Login Page containing the login form, users can login with username and password   -->
+ <!-- import base template  -->
 {% extends "base.html" %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<div class ="page-sub-heading">
+    <h2>Login</h2>
+    </div>  
+    <div class="form-container">
+<!-- Login Form with username and password fields -->
 <form>
-    <input type="text" placeholder="Username">
-    <input type="password" placeholder="Password">
+    <!-- Username Field -->
+    <div class = "input-container">
+        <label for="username">Please enter your username:</label>
+    <input type="text" id="username" placeholder="Username">
+    </div>
+    <!-- Password Field -->
+    <div class = "input-container">
+        <label for="password">Please enter your password:</label>
+    <input type="password" id="password" placeholder="Password">
+    </div>
+    <!-- Submit Button -->
+    <button type="submit">Login</button>
 </form>
+    </div>
+
 {% endblock %}
