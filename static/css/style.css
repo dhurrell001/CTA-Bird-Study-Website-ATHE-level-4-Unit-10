@@ -84,10 +84,10 @@ body {
     border: 2px solid #82b366;
     margin: 5px;
 }
-/* =============== CSS for login page ============ */
+/* =============== CSS for forms to be used across the site ============ */
 .form-container {
     max-width: 400px;
-    max-height: 500px;
+    max-height: 1000px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -124,16 +124,72 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
-/* =============== CSS for register page ============ */
-.register-container {
-    max-width: 400px;
-    max-height: 400px;
-    margin: 50px auto;
-    padding: 20px;
+/* ============ Css for newPost page =========*/
+textarea {
+    padding: 10px;
+    font-size: 16px;
+    min-height: 100px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    /* background-color: #f9f9f9; */
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.form-container select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* =============== CSS for view posts page ============ */
+
+.search-container {
+    max-width: 500px;
+    margin: 20px auto;
     display: flex;
-    flex-direction: column;
-    /* background-color:#d5e8d4; */
+    gap: 15px;
+    align-items: center;
+}
+
+.search-container input {
+    /* flex: 1; */
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+}
+/* post container uses grid layout  to display post tiles*/
+.posts-container {
+    max-width: 900px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.post-card {
+    background-color: #d5e8d4;
+    border: 1px solid #82b366;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.post-card p {
+    margin: 5px 0;
+}
+
+.post-image-placeholder {
+    margin-top: 10px;
+    height: 80px;
+    border: 1px solid #82b366;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* container for post editing/deleting buttons */
+.post-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
 }
