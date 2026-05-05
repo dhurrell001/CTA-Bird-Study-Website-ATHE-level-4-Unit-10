@@ -11,10 +11,10 @@
 </div>
 
 <!-- search area for filtering posts by keyword -->
-<form class="search-container">
+<form class="search-container" method="GET">
     <label for="search">Search:</label>
     <input type="text" id="search" name="search" placeholder="Search by keyword">
-    <button type="submit" class="form-button">Search</button>
+    <button type="submit" class="form-button" onclick="searchPosts()">Search</button>
 </form>
 
 <!-- container for all post display tiles, these will be generated dynamically when database and backend are connected -->
@@ -67,8 +67,8 @@
 
         <!-- these button will be shown conditionally using jinja when user is logged in -->
         <div class="post-actions">
-            <button type="button" class="form-button">Edit</button>
-            <button type="button" class="form-button">Delete</button>
+            <button type="button" class="form-button" onclick="editPost()">Edit</button>
+            <button type="button" class="form-button" onclick="deletePost()">Delete</button>
         </div>
     </article>
 
