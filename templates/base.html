@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>{% block title %}CEA Bird Study{% endblock %}</title>
+    <!-- link to the CSS stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -12,18 +13,20 @@
         <h1>CEA Bird Study</h1>
         <p>Partnered with the Centrala Trust for Ornithology</p>
     </header>
-
+<!-- Navigation Bar, will be displayed on all pages  -->
     <nav class="navbar">
         <a href="/">Home</a>
-        <a href="/newPost">New Post</a>
-        <a href="/viewPosts">View Posts</a>
+        <a href="/new_post">New Post</a>
+        <a href="/view_posts">View Posts</a>
         <a href="/register">Register</a>
         <a href="/login">Login</a>
     </nav>
 <!-- Main Content will be inserted here from child page templates -->
 <main>
     {% block content %}{% endblock %}
-</main>
 
+</main>
+ <!-- Load JavaScript at the end of file so the HTML loads first -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
