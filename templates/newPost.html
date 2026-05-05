@@ -1,0 +1,106 @@
+<!-- New Post Page allows users to submit a bird sighting -->
+ <!-- This page will be reused for editing posts, pre-filled with existing post data -->
+{% extends "base.html" %}
+
+{% block title %}New Post{% endblock %}
+
+{% block content %}
+<!-- Will need to add conditional sub-heading logic to change based on whether the user is adding a new post or editing an existing one -->
+<div class="page-sub-heading">
+    <h2>Add New Post</h2>
+</div>
+
+<div class="form-container">
+
+    <!-- Form collects bird sighting details and allows optional image upload. 'enctype="multipart/form-data"' is necessary for file/picture uploads -->
+    <form method="POST" enctype="multipart/form-data">
+<!-- Username field for user submitting the sighting, should be pre-filled if user is logged in once backend is complete -->
+        <div class="input-container">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username">
+        </div>
+<!-- dropdown menu for location selection, hard-coded at present. -->
+        <div class="input-container">
+            <label for="location">Location:</label>
+            <select id="location" name="location">
+                <option value="">Select location</option>
+                <option value="Erean">Erean</option>
+                <option value="Brunad">Brunad</option>
+                <option value="Bylyn">Bylyn</option>
+                <option value="Docia">Docia</option>
+                <option value="Marend">Marend</option>
+                <option value="Pryn">Pryn</option>
+                <option value="Zord">Zord</option>
+                <option value="Yaean">Yaean</option>
+                <option value="Frestin">Frestin</option>
+                <option value="Stonyam">Stonyam</option>
+                <option value="Ryall">Ryall</option>
+                <option value="Ruril">Ruril</option>
+                <option value="Keivia">Keivia</option>
+                <option value="Tallan">Tallan</option>
+                <option value="Adohad">Adohad</option>
+                <option value="Obelyn">Obelyn</option>
+                <option value="Holmer">Holmer</option>
+                <option value="Vertwall">Vertwall</option>
+            </select>
+        </div>
+<!-- Date field for specifying the date of the sighting, displayed as a date picker -->
+        <div class="input-container">
+            <label for="observation-date">Date:</label>
+            <input type="date" id="observation-date" name="observation_date">
+        </div>
+<!-- Time field for specifying the time of the sighting, displayed as a time picker -->
+        <div class="input-container">
+            <label for="observation-time">Time:</label>
+            <input type="time" id="observation-time" name="observation_time">
+        </div>
+<!-- Dropdown menu for bird species selection -->
+        <div class="input-container">
+            <label for="bird-species">Bird species:</label>
+            <select id="bird-species" name="bird_species">
+                <option value="">Select bird species</option>
+                <option value="Wood Pigeon">Wood Pigeon</option>
+                <option value="House Sparrow">House Sparrow</option>
+                <option value="Starling">Starling</option>
+                <option value="Blue Tit">Blue Tit</option>
+                <option value="Blackbird">Blackbird</option>
+                <option value="Robin">Robin</option>
+                <option value="Goldfinch">Goldfinch</option>
+                <option value="Magpie">Magpie</option>
+                <option value="Other/Unknown">Other/Unknown</option>
+            </select>
+        </div>
+<!-- Dropdown menu for primary activity selection -->
+        <div class="input-container">
+            <label for="activity">Primary activity:</label>
+            <select id="activity" name="activity">
+                <option value="">Select activity</option>
+                <option value="Visit">Visit</option>
+                <option value="Feeding">Feeding</option>
+                <option value="Nesting">Nesting</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+<!--  Duration field allows users to specify the length of the sighting in minutes -->
+        <div class="input-container">
+            <label for="duration">Duration:</label>
+            <input type="number" id="duration" name="duration" placeholder="Minutes" min="1">
+        </div>
+<!-- comments field allows users to add any extra details about the sighting -->
+        <div class="input-container">
+            <label for="comments">Comments:</label>
+            <textarea id="comments" name="comments" placeholder="Add any extra details"></textarea>
+        </div>
+<!-- image upload field allows users to upload a picture of the sighting -->
+        <div class="input-container">
+            <label for="image">Upload image:</label>
+            <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png">
+        </div>
+<!-- Submit button for the form sends a POST request -->
+        <button type="submit" class="form-button">Post</button>
+
+    </form>
+
+</div>
+
+{% endblock %}
