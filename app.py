@@ -17,11 +17,11 @@ def login():
 def register():
     return render_template("register.html")
 # route for the new post page, renders the newPost.html template
-@app.route("/newPost")
+@app.route("/new_post", methods=["GET", "POST"])
 def newPost():
     return render_template("newPost.html")
 # route for the view posts page, renders the viewPosts.html template
-@app.route("/viewPosts")
+@app.route("/view_posts")
 def viewPosts():
     return render_template("viewPosts.html")
 
