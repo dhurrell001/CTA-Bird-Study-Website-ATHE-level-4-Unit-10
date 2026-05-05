@@ -16,6 +16,14 @@ def login():
 @app.route("/register")
 def register():
     return render_template("register.html")
+# route for the new post page, renders the newPost.html template
+@app.route("/newPost")
+def newPost():
+    return render_template("newPost.html")
+# route for the view posts page, renders the viewPosts.html template
+@app.route("/viewPosts")
+def viewPosts():
+    return render_template("viewPosts.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
