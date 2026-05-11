@@ -8,12 +8,12 @@ def home():
     
     
 # route for the login page, renders the login.html template 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template("login.html")
 
 # route for the register page, renders the register.html template
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
     return render_template("register.html")
 # route for the new post page, renders the newPost.html template
