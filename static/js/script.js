@@ -1,22 +1,8 @@
-// JavaScript functions for handling button clicks and form submissions, currently just display alert messages for testing purposes
-function editPost() {
-    alert("Edit post clicked");
-}
-function deletePost() {
-    confirm("Are you sure you want to delete this post?");
-
-}
-function searchPosts() {
-    alert("Search button clicked");
-}
-function submitPost() {
-    alert("Submit post button clicked");
-    return false; // prevent form submission for testing
-}
 
 
 // ================ Js for validating registration form before submission =======================================
 // this contain only basic validation as a proof of concept.
+
 // Get the registration form element by its ID
 const registerForm = document.getElementById("register-form");
 // Check if the form exists before adding event listener, this prevents errors on pages that don't have the form
@@ -93,9 +79,13 @@ if (newPostForm) {
     newPostForm.addEventListener("submit", function(event) {
         // get form values by their IDs
         const username = document.getElementById("username").value;
-        const birdSpecies = document.getElementById("bird-species").value;
         const location = document.getElementById("location").value;
-        const date = document.getElementById("date").value;
+        const date = document.getElementById("observation-date").value;
+        const time = document.getElementById("observation-time").value;
+        const birdSpecies = document.getElementById("bird-species").value;
+        const activity = document.getElementById("activity").value;
+        const duration = document.getElementById("duration").value;
+        const image = document.getElementById("image").value;
         // stop form submitting if validation fails
         if (username === "") {
             alert("Username is required");
@@ -118,4 +108,59 @@ if (newPostForm) {
             event.preventDefault();
             return;
         }
+        if (activity === "") {
+            alert("Activity is required");
+            event.preventDefault();
+            return;
+        }
+
+        // check duration in a number format and greater than 0 using OR operator 
+      
+        if (isNaN(duration) || duration <= 0) {
+          alert("Duration must be a number greater than 0");
+            event.preventDefault();
+            return;
+        }
+        // Use regular expression to validate image file extension if an image is uploaded
+        if (image) {
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.test(image)) {
+                alert("Invalid image format. Please upload a JPG, JPEG, PNG, or GIF file.");
+                event.preventDefault();
+                return;
+            }
+        }
+
     })};
+
+    // ================= Js for validating search form before submission =======================================
+
+// Get the search form element by its ID
+const searchForm = document.getElementById("search-form");
+// Check if the form exists before adding event listener.
+if (searchForm) {   
+    // add event listener to search form submit event
+    searchForm.addEventListener("submit", function(event) {
+        // get form values by their IDs
+        const searchQuery = document.getElementById("search-query").value;
+        // stop form submitting if validation fails
+        if (searchQuery === "") {
+            alert("Please enter a search query");
+            // prevent defaultform submission behavior
+            event.preventDefault();
+            return;
+        }
+    })};
+    // ================ delete post confirmation =======================================
+    // Get delete post button by its ID
+    const deletePostButton = document.getElementById("delete-post");
+    // Check if the button exists before adding event listener.
+    if (deletePostButton) {
+        // add event listener to delete post button click event
+        deletePostButton.addEventListener("click", function(event) {
+            // show confirmation dialog box and prevent deleting post if user clicks cancel
+            if (!confirm("Are you sure you want to delete this post?")) {
+                event.preventDefault();
+            }
+        });
+    }
