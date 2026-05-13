@@ -11,7 +11,10 @@
 </div>
 
 <div class="form-container">
-
+    <!-- Display success message if one exists   -->
+    {% if message %}
+    <p class="success-message">{{ message }}</p>
+{% endif %}
     <!-- Form collects bird sighting details and allows optional image upload. 'enctype="multipart/form-data"' is necessary for file/picture uploads -->
     <form id="new-post-form" method="POST" enctype="multipart/form-data">
 <!-- Username field for user submitting the sighting, should be pre-filled if user is logged in once backend is complete -->
