@@ -9,7 +9,10 @@
 <div class="page-sub-heading">
     <h2>Create Account</h2>
 </div>
-
+<!-- Display success message if message exists, using Jinja2 templating to insert the message conditionally -->
+{% if message %}
+    <p class="success-message">{{ message }}</p>
+{% endif %}
 <!-- container for the registration form -->
 <div class="form-container">
 
