@@ -193,3 +193,12 @@ textarea {
     display: flex;
     gap: 10px;
 }
+/* ====== success message styles ====== */
+.success-message {
+    background-color: #d5e8d4;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #82b366;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
