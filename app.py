@@ -4,6 +4,8 @@ import os
 from flask import Flask, render_template, request
 # import secure_filename for handling file uploads.
 from werkzeug.utils import secure_filename
+# import SQLite3 to set up a database connection and execute SQL commands
+import sqlite3
 
 # create a Flask app instance
 app = Flask(__name__)
@@ -15,6 +17,30 @@ ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 # configure the Flask app to use the upload folder and set a maximum content length for uploads (1.2 MB)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = int(1.2 * 1024 * 1024)
+
+# helper function to get a database connection, connects to the SQLite database and sets the row factory to sqlite3.
+# Row for easier access to query results
+def get_db_connection():
+    print(os.getcwd())
+    conn = sqlite3.connect("database.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+# Create a user table if one does not already exist. It will store user registration information
+#  user_id is the primary key
+def create_tables():
+    conn = get_db_connection()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL,
+            password TEXT NOT NULL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 #  route for the home page, renders the home.html template
 @app.route("/")
@@ -31,22 +57,33 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 #  Print register form data to console for testing purposes, to show handling of posted data
 
+@app.route("/register", methods=["GET", "POST"])
+
 def register():
-    # Check if the request method is POST meaning form has been submitted
-    message = "" # create message with empty string to prevent error if routre is accessed with GET method.
+    message = ""
+    # Check if the method is POST meaning form has been submitted.
     if request.method == "POST":
-        # get the form data
         username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
-
-        # print the form data to the console
-        print("Username:", username)
-        print("Email:", email)
-        print("Password:", password)
-
-        # Send message back to the htnl template to display, to show that form was sucessfully posted.
-        message = "Registration form submitted successfully."
+    # Try to insert new user into users table.
+        try:
+            # call helper function to create a database connection and execute an SQL command to insert the new user data into the users table.
+            conn = get_db_connection()
+            # execute the SQL command. Parameterized query is used to prevent SQL injection attacks. 
+            conn.execute("""
+                INSERT INTO users (username, email, password)
+                VALUES (?, ?, ?)
+            """, (username, email, password))
+        # commit the changes to the database and close the connection
+            conn.commit()
+            conn.close()
+    # display success message
+            message = "User registered successfully."
+    # If the username already exists, an IntegrityError will be raised due 
+    # to the UNIQUE on the username column. 
+        except sqlite3.IntegrityError:
+            message = "That username already exists. Please choose another."
 
     return render_template("register.html", message=message)
 
@@ -102,6 +139,8 @@ def newPost():
 @app.route("/view_posts")
 def viewPosts():
     return render_template("viewPosts.html")
+
+create_tables() # call the create_tables function to make sure the database and user table are set uo when the app starts
 
 if __name__ == "__main__":
     app.run(debug=True)
