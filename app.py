@@ -48,14 +48,34 @@ def home():
     return render_template("home.html")
     
     
-# route for the login page, renders the login.html template 
+# route for the login page, verifies the username and password against the users table in the database and
+#  displays a success or error message.. Renders the login.html with the message to display success or error.
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    message = ""
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = get_db_connection()
+        # search for user with matching username and password in the users table. 
+        # fetchone return the first result found or returns None if no match is found.
+        user = conn.execute("""
+            SELECT * FROM users
+            WHERE username = ? AND password = ?
+        """, (username, password)).fetchone()
+
+        conn.close()
+        # if a mathcing user is found send success message else sen error message.
+        if user:
+            message = "Login successful."
+        else:
+            message = "Invalid username or password."
+
+    return render_template("login.html", message=message)
 
 # =================route for the register page, renders the register.html template=========================
-@app.route("/register", methods=["GET", "POST"])
-#  Print register form data to console for testing purposes, to show handling of posted data
 
 @app.route("/register", methods=["GET", "POST"])
 
@@ -84,6 +104,11 @@ def register():
     # to the UNIQUE on the username column. 
         except sqlite3.IntegrityError:
             message = "That username already exists. Please choose another."
+            #  finally clause is used to ensure that the database connection is closed even if an error occurs.
+            #  help prevent database being locked due to open connections.
+        finally:
+            if conn:
+                conn.close()
 
     return render_template("register.html", message=message)
 
