@@ -18,9 +18,22 @@
         <a href="/">Home</a>
         <a href="/new_post">New Post</a>
         <a href="/view_posts">View Posts</a>
+        <!-- Show register button if no user is logged in -->
+        {% if not session.username %}
         <a href="/register">Register</a>
-        <a href="/login">Login</a>
+        {% endif %}
+        <!-- toggle login/logout based on user being logged in -->
+        {% if session.username %}
+        <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+        {% endif %}
+        
     </nav>
+    <!-- Display logged-in message if user is authenticated -->
+    {% if session.username %}
+    <p class="logged-in-message">Logged in as {{ session.username }}</p>
+    {% endif %}
 <!-- Main Content will be inserted here from child page templates -->
 <main>
     {% block content %}{% endblock %}
