@@ -1,7 +1,8 @@
 # import os module for handling file paths
 import os
 # import Flask and render_template for rendering HTML templates, request for handling form data
-from flask import Flask, render_template, request
+# session for managing user sessions, redirect and url_for for handling redirects after form submissions
+from flask import Flask, render_template, request, session, redirect, url_for
 # import secure_filename for handling file uploads.
 from werkzeug.utils import secure_filename
 # import SQLite3 to set up a database connection and execute SQL commands
@@ -9,7 +10,7 @@ import sqlite3
 
 # create a Flask app instance
 app = Flask(__name__)
-
+app.secret_key = "temporary_secret_key"  # set a secret key for session management. Will need to be updated for production use.
 # set up the upload folder and allowed file extensions for image uploads
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
@@ -67,13 +68,20 @@ def login():
         """, (username, password)).fetchone()
 
         conn.close()
-        # if a mathcing user is found send success message else sen error message.
+        # if a mathcing user is create a session and redirect to the view posts page. 
         if user:
-            message = "Login successful."
+            session["user_id"] = user["user_id"]
+            session["username"] = user["username"]
+            return redirect(url_for("viewPosts"))
         else:
             message = "Invalid username or password."
 
     return render_template("login.html", message=message)
+# ============================ route for the logout page, clears the user session and redirects to the home page=========================
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
 
 # =================route for the register page, renders the register.html template=========================
 
