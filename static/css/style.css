@@ -202,3 +202,12 @@ textarea {
     border-radius: 4px;
     margin-bottom: 20px;
 }
+
+.logged-in-message {
+    background-color: #d5e8d4;
+    color: #333;
+    padding: 5px;
+    border: 1px solid #82b366;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
