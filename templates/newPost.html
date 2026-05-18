@@ -1,13 +1,19 @@
-<!-- New Post Page allows users to submit a bird sighting -->
- <!-- This page will be reused for editing posts, pre-filled with existing post data -->
+<!-- New Post Page allows users to submit a bird sighting This page will be reused for editing posts,
+  pre-filled with existing post data -->
 {% extends "base.html" %}
 
 {% block title %}New Post{% endblock %}
 
 {% block content %}
-<!-- Will need to add conditional sub-heading logic to change based on whether the user is adding a new post or editing an existing one -->
+<!-- logic to change based on whether the user is adding a new post or editing an existing one -->
 <div class="page-sub-heading">
-    <h2>Add New Post</h2>
+    <h2>
+    {% if post %}
+        Edit Post
+    {% else %}
+        Add New Post
+    {% endif %}
+    </h2>
 </div>
 
 <div class="form-container">
@@ -17,12 +23,19 @@
 {% endif %}
     <!-- Form collects bird sighting details and allows optional image upload. 'enctype="multipart/form-data"' is necessary for file/picture uploads -->
     <form id="new-post-form" method="POST" enctype="multipart/form-data">
-<!-- Username field for user submitting the sighting, should be pre-filled if user is logged in once backend is complete -->
+<!-- Username field for user submitting the sighting, will be pre-filled if user is logged in  -->
         <div class="input-container">
+            <!-- Usses session.username to pre-fill the field -->
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Username">
+            <input
+                type="text"
+                id="username"
+                name="username"
+                value="{{ session.username }}"
+                readonly
+            >
         </div>
-<!-- dropdown menu for location selection, hard-coded at present. -->
+<!-- dropdown menu for location selection. -->
         <div class="input-container">
             <label for="location">Location:</label>
             <select id="location" name="location">
@@ -50,12 +63,22 @@
 <!-- Date field for specifying the date of the sighting, displayed as a date picker -->
         <div class="input-container">
             <label for="observation-date">Date:</label>
-            <input type="date" id="observation-date" name="observation_date">
+            <input
+                type="date"
+                id="observation-date"
+                name="observation_date"
+                value="{{ post.observation_date if post else '' }}"
+            >
         </div>
 <!-- Time field for specifying the time of the sighting, displayed as a time picker -->
         <div class="input-container">
             <label for="observation-time">Time:</label>
-            <input type="time" id="observation-time" name="observation_time">
+            <input
+                type="time"
+                id="observation-time"
+                name="observation_time"
+                value="{{ post.observation_time if post else '' }}"
+            >
         </div>
 <!-- Dropdown menu for bird species selection -->
         <div class="input-container">
@@ -76,23 +99,53 @@
 <!-- Dropdown menu for primary activity selection -->
         <div class="input-container">
             <label for="activity">Primary activity:</label>
-            <select id="activity" name="activity">
-                <option value="">Select activity</option>
-                <option value="Visit">Visit</option>
-                <option value="Feeding">Feeding</option>
-                <option value="Nesting">Nesting</option>
-                <option value="Other">Other</option>
-            </select>
+           <select id="activity" name="activity">
+
+    <option value="">Select activity</option>
+
+            <option value="Visit"
+            {% if post and post.activity == "Visit" %}selected{% endif %}>
+                Visit
+            </option>
+
+            <option value="Feeding"
+            {% if post and post.activity == "Feeding" %}selected{% endif %}>
+                Feeding
+            </option>
+
+            <option value="Nesting"
+            {% if post and post.activity == "Nesting" %}selected{% endif %}>
+                Nesting
+            </option>
+
+            <option value="Other"
+            {% if post and post.activity == "Other" %}selected{% endif %}>
+                Other
+            </option>
+
+        </select>
         </div>
 <!--  Duration field allows users to specify the length of the sighting in minutes -->
         <div class="input-container">
             <label for="duration">Duration:</label>
-            <input type="number" id="duration" name="duration" placeholder="Minutes" min="1">
+            <input
+                type="number"
+                id="duration"
+                name="duration"
+                placeholder="Minutes"
+                min="1"
+                value="{{ post.duration if post else '' }}"
+            >
         </div>
 <!-- comments field allows users to add any extra details about the sighting -->
         <div class="input-container">
             <label for="comments">Comments:</label>
-            <textarea id="comments" name="comments" placeholder="Add any extra details"></textarea>
+            <textarea
+                id="comments"
+                name="comments"
+                placeholder="Add any extra details"
+            >{{ post.comments if post else '' }}
+            </textarea>
         </div>
 <!-- image upload field allows users to upload a picture of the sighting -->
         <div class="input-container">
