@@ -20,60 +20,44 @@
 <!-- container for all post display tiles, these will be generated dynamically when database and backend are connected -->
 <div class="posts-container">
 
-    <!-- individual post display tile, each post will have its own tile -->
-    <article class="post-card">
-        <h3>will contain birdtype</h3>
-        <p><strong>Username:</strong> Dave</p>
-        <p><strong>Location:</strong> Erean</p>
-        <p><strong>Date:</strong> 23/04/2026</p>
-        <p><strong>Time:</strong> 13:00</p>
-        <p><strong>Bird:</strong> House Sparrow</p>
-        <p><strong>Activity:</strong> Feeding</p>
-        <p><strong>Duration:</strong> 3 minutes</p>
-        <p><strong>Comment:</strong> Several other birds were present but did not feed.</p>
-<!-- placeholder image, will be replaced with actual image when database is connected -->
-       <div class ="image-box">
-            <img src="{{ url_for('static', filename='images/chris-smith-ZeIFgSO3MAU-unsplash.jpg') }}" alt="Bird" class="bird-image">
-          </div>
-    </article>
+    {% for post in posts %}
 
-    <article class="post-card">
-        <h3>will contain birdtype</h3>
-        <p><strong>Username:</strong> Roger</p>
-        <p><strong>Location:</strong> Midtown</p>
-        <p><strong>Date:</strong> 23/04/2026</p>
-        <p><strong>Time:</strong> 13:00</p>
-        <p><strong>Bird:</strong> Blackbird</p>
-        <p><strong>Activity:</strong> Nesting</p>
-        <p><strong>Duration:</strong> 120 minutes</p>
-        <p><strong>Comment:</strong> I think there may be chicks in the nest.</p>
+        <article class="post-card">
+            <h3>{{ post.bird_species }}</h3>
 
-        <div class ="image-box">
-            <img src="{{ url_for('static', filename='images/chris-smith-ZeIFgSO3MAU-unsplash.jpg') }}" alt="Bird" class="bird-image">
-          </div>
-    </article>
+            <p><strong>Username:</strong> {{ post.username }}</p>
+            <p><strong>Location:</strong> {{ post.location }}</p>
+            <p><strong>Date:</strong> {{ post.observation_date }}</p>
+            <p><strong>Time:</strong> {{ post.observation_time }}</p>
+            <p><strong>Bird:</strong> {{ post.bird_species }}</p>
+            <p><strong>Activity:</strong> {{ post.activity }}</p>
+            <p><strong>Duration:</strong> {{ post.duration }} minutes</p>
+            <p><strong>Comment:</strong> {{ post.comments }}</p>
 
-    <article class="post-card">
-        <h3>will contain birdtype</h3>
-        <p><strong>Username:</strong> Dave</p>
-        <p><strong>Location:</strong> Zord</p>
-        <p><strong>Date:</strong> 27/04/2026</p>
-        <p><strong>Time:</strong> 15:00</p>
-        <p><strong>Bird:</strong> Starling</p>
-        <p><strong>Activity:</strong> Visit</p>
-        <p><strong>Duration:</strong> 1 minute</p>
-        <p><strong>Comment:</strong> Perched on the chimney stack and then flew away.</p>
+            {% if post.image_filename %}
+                <div class="image-box">
+                    <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}"
+                         alt="Bird image"
+                         class="bird-image">
+                </div>
+            {% endif %}
+                <!-- Check if userID is same as PostID to stop users deleting other users posts  -->
+            {% if session.user_id == post.user_id %}
+                <div class="post-actions">
+                    <a href="{{ url_for('editPost', post_id=post.post_id) }}">
+                        <button type="button" class="form-button">Edit</button>
+                    </a>
+                    <!-- button sends post ID as a parameter so it can be used in SQL query -->
+                    <form method="POST" action="{{ url_for('deletePost', post_id=post.post_id) }}">
+                        <button type="submit" class="form-button">Delete</button>
+                    </form>
+                </div>
+            {% endif %}
 
-        <div class ="image-box">
-            <img src="{{ url_for('static', filename='images/chris-smith-ZeIFgSO3MAU-unsplash.jpg') }}" alt="Bird" class="bird-image">
-          </div>
+        </article>
 
-        <!-- these button will be shown conditionally using jinja when user is logged in -->
-        <div class="post-actions">
-            <button type="button" class="form-button" onclick="editPost()">Edit</button>
-            <button type="button" class="form-button" id="delete-post">Delete</button>
-        </div>
-    </article>
+    {% endfor %}
+
 
 </div>
 
