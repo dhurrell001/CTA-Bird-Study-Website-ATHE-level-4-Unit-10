@@ -12,7 +12,7 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "temporary_secret_key"  # set a secret key for session management. Will need to be updated for production use.
 # set up the upload folder and allowed file extensions for image uploads
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 
 # configure the Flask app to use the upload folder and set a maximum content length for uploads (1.2 MB)
@@ -38,6 +38,23 @@ def create_tables():
             email TEXT NOT NULL,
             password TEXT NOT NULL
         )
+    """)
+    # Creta a table to store user posts. Uses a foreign key to link each post to a user in the users table.
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS posts (
+        post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        location TEXT NOT NULL,
+        observation_date TEXT NOT NULL,
+        observation_time TEXT NOT NULL,
+        bird_species TEXT NOT NULL,
+        activity TEXT NOT NULL,
+        duration INTEGER NOT NULL,
+        comments TEXT,
+        image_filename TEXT,
+
+        FOREIGN KEY (user_id) REFERENCES users (user_id)
+    )
     """)
 
     conn.commit()
@@ -128,42 +145,53 @@ def allowed_file(filename):
 
 @app.route("/new_post", methods=["GET", "POST"])
 def newPost():
-    message = "" # create message with empty string to prevent error if routre is accessed with GET method.
-    # Check if the method is POST meaning form has been submitted.
+    message = ""
+    #  check if user is logged in by seeing if user_id is in the session. If the user is not logged redirect
+    #  to the login page. only logged in users can post.
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    #  if method is POST gather data from the form.
     if request.method == "POST":
-        username = request.form.get("username")
-        location = request.form.get("location")
-        observation_date = request.form.get("observation_date")
-        observation_time = request.form.get("observation_time")
-        bird_species = request.form.get("bird_species")
-        activity = request.form.get("activity")
-        duration = request.form.get("duration")
-        comments = request.form.get("comments")
-    # print the form data to show handling of posted data
-        print("Username:", username)
-        print("Location:", location)
-        print("Date:", observation_date)
-        print("Time:", observation_time)
-        print("Bird:", bird_species)
-        print("Activity:", activity)
-        print("Duration:", duration)
-        print("Comments:", comments)
-        # handle the image upload, get the image file from the form data
+        user_id = session["user_id"]
+
+        location = request.form["location"]
+        observation_date = request.form["observation_date"]
+        observation_time = request.form["observation_time"]
+        bird_species = request.form["bird_species"]
+        activity = request.form["activity"]
+        duration = request.form["duration"]
+        comments = request.form["comments"]
+
         image = request.files.get("image")
-        # check if an image was uploaded and if the filename is not empty
+        image_filename = ""
+        # check if an image was uploaded and if the filename is not empty. If an image was uploaded, 
+        # check if the file type is allowed using the allowed_file helper function.
         if image and image.filename != "":
-            # check if the uploaded file has an allowed extension using the allowed_file helper function
             if allowed_file(image.filename):
-                filename = secure_filename(image.filename)
-                save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                image.save(save_path)
-                print("Image saved:", filename)
-                # set a success message to be displayed in the template
-                message = "Post and image uploaded successfully."
+                image_filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config["UPLOAD_FOLDER"], image_filename))
             else:
                 message = "Invalid image type. Please upload a JPG or PNG file."
-        else:
-            message = "Post submitted without an image."
+                return render_template("newPost.html", message=message)
+
+        conn = get_db_connection()
+        # execute an SQL command to insert the new post data into the posts table. 
+        # The user_id is included to link the post to the user who created it.
+        conn.execute("""
+            INSERT INTO posts (
+                user_id, location, observation_date, observation_time,
+                bird_species, activity, duration, comments, image_filename
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            user_id, location, observation_date, observation_time,
+            bird_species, activity, duration, comments, image_filename
+        ))
+
+        conn.commit()
+        conn.close()
+
+        message = "Post saved successfully."
 
     return render_template("newPost.html", message=message)
 
@@ -171,7 +199,110 @@ def newPost():
 #================== route for the view posts page, renders the viewPosts.html template=================
 @app.route("/view_posts")
 def viewPosts():
-    return render_template("viewPosts.html")
+    conn = get_db_connection()
+    # execute an SQL to retrieve all posts from the posts table with the username of the user who created the post.
+    # send result ast posts to the viewPost template.
+    posts = conn.execute("""
+        SELECT posts.*, users.username
+        FROM posts
+        JOIN users ON posts.user_id = users.user_id
+        ORDER BY posts.post_id DESC
+    """).fetchall()
+
+    conn.close()
+
+    return render_template("viewPosts.html", posts=posts)
+
+# ========================== Delete posts =================================================
+# PostID is passed as a parameter in the URL and used to identify which post to delete. 
+# Only the user who created the post can delete it.
+@app.route("/deletePost/<int:post_id>", methods=["POST"])
+def deletePost(post_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+    # use post_id and user_id to find the post in database.
+    post = conn.execute("""
+        SELECT * FROM posts
+        WHERE post_id = ? AND user_id = ?
+    """, (post_id, session["user_id"])).fetchone()
+    # if post is found, execute an SQL command to delete the post.
+    if post:
+        conn.execute("DELETE FROM posts WHERE post_id = ?", (post_id,))
+        conn.commit()
+
+    conn.close()
+
+    return redirect(url_for("viewPosts"))
+#========================== Edit posts =================================================
+# PostID is passed as a parameter in URL and used to identify which post to edit.
+@app.route("/editPost/<int:post_id>", methods=["GET", "POST"])
+def editPost(post_id):
+
+    # check user is logged in
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+
+    # get the post that belongs to logged in user
+    post = conn.execute("""
+        SELECT * FROM posts
+        WHERE post_id = ? AND user_id = ?
+    """, (post_id, session["user_id"])).fetchone()
+
+    # close connection if post not found or user does not own post
+    if not post:
+        conn.close()
+        return "Post not found"
+
+    # submit the form to update the post. Form is pre-filled with the posts data to be edited by user.
+    if request.method == "POST":
+
+        location = request.form["location"]
+        observation_date = request.form["observation_date"]
+        observation_time = request.form["observation_time"]
+        bird_species = request.form["bird_species"]
+        activity = request.form["activity"]
+        duration = request.form["duration"]
+        comments = request.form["comments"]
+
+        # update existing database record with new data from form. 
+        # post_id is used to identify which record to update.
+        conn.execute("""
+            UPDATE posts
+            SET
+                location = ?,
+                observation_date = ?,
+                observation_time = ?,
+                bird_species = ?,
+                activity = ?,
+                duration = ?,
+                comments = ?
+            WHERE post_id = ?
+        """, (
+            location,
+            observation_date,
+            observation_time,
+            bird_species,
+            activity,
+            duration,
+            comments,
+            post_id
+        ))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("viewPosts"))
+
+    conn.close()
+
+    # show form pre-filled with current post data
+    return render_template("newPost.html", post=post, username=session["username"])
+
+#======================= Create tables and run the app =========================
 
 create_tables() # call the create_tables function to make sure the database and user table are set uo when the app starts
 
