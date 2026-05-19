@@ -22,7 +22,7 @@ app.config["MAX_CONTENT_LENGTH"] = int(1.2 * 1024 * 1024)
 # helper function to get a database connection, connects to the SQLite database and sets the row factory to sqlite3.
 # Row for easier access to query results
 def get_db_connection():
-    print(os.getcwd())
+    
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     return conn
@@ -60,11 +60,13 @@ def create_tables():
     conn.commit()
     conn.close()
 
-#  route for the home page, renders the home.html template
+#  =====================route for the home page, renders the home.html template===========
+
 @app.route("/")
 def home():
     return render_template("home.html")
-    
+
+#=========================== Login route ===============================    
     
 # route for the login page, verifies the username and password against the users table in the database and
 #  displays a success or error message.. Renders the login.html with the message to display success or error.
@@ -94,7 +96,9 @@ def login():
             message = "Invalid username or password."
 
     return render_template("login.html", message=message)
+
 # ============================ route for the logout page, clears the user session and redirects to the home page=========================
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -197,6 +201,7 @@ def newPost():
 
 
 #================== route for the view posts page, renders the viewPosts.html template=================
+
 @app.route("/view_posts")
 def viewPosts():
     conn = get_db_connection()
@@ -214,6 +219,7 @@ def viewPosts():
     return render_template("viewPosts.html", posts=posts)
 
 # ========================== Delete posts =================================================
+
 # PostID is passed as a parameter in the URL and used to identify which post to delete. 
 # Only the user who created the post can delete it.
 @app.route("/deletePost/<int:post_id>", methods=["POST"])
@@ -235,7 +241,9 @@ def deletePost(post_id):
     conn.close()
 
     return redirect(url_for("viewPosts"))
+
 #========================== Edit posts =================================================
+
 # PostID is passed as a parameter in URL and used to identify which post to edit.
 @app.route("/editPost/<int:post_id>", methods=["GET", "POST"])
 def editPost(post_id):
