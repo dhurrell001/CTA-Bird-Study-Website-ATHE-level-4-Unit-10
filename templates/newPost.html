@@ -85,16 +85,45 @@
             <label for="bird-species">Bird species:</label>
             <select id="bird-species" name="bird_species">
                 <option value="">Select bird species</option>
-                <option value="Wood Pigeon">Wood Pigeon</option>
-                <option value="House Sparrow">House Sparrow</option>
-                <option value="Starling">Starling</option>
-                <option value="Blue Tit">Blue Tit</option>
-                <option value="Blackbird">Blackbird</option>
-                <option value="Robin">Robin</option>
-                <option value="Goldfinch">Goldfinch</option>
-                <option value="Magpie">Magpie</option>
-                <option value="Other/Unknown">Other/Unknown</option>
+                <option value="Wood Pigeon"
+                    {% if post and post.bird_species == "Wood Pigeon" %}selected{% endif %}>
+                    Wood Pigeon
+                </option>
+                
+                <option value="House Sparrow"
+                {% if post and post.bird_species == "House Sparrow" %}selected{% endif %}>
+                    House Sparrow
+                </option>
+                <option value="Starling" 
+                {% if post and post.bird_species == "Starling" %}selected{% endif %}>
+                    Starling
+                    </option>
+                <option value="Blue Tit" 
+                {% if post and post.bird_species == "Blue Tit" %}selected{% endif %}>
+                    Blue Tit
+                </option>
+                <option value="Blackbird" 
+                {% if post and post.bird_species == "Blackbird" %}selected{% endif %}>
+                    Blackbird
+                </option>
+                <option value="Robin" 
+                {% if post and post.bird_species == "Robin" %}selected{% endif %}>
+                    Robin
+                </option>
+                <option value="Goldfinch" 
+                {% if post and post.bird_species == "Goldfinch" %}selected{% endif %}>
+                    Goldfinch
+                </option>
+                <option value="Magpie" 
+                {% if post and post.bird_species == "Magpie" %}selected{% endif %}>
+                    Magpie
+                </option>
+                <option value="Other/Unknown" 
+                {% if post and post.bird_species == "Other/Unknown" %}selected{% endif %}>
+                    Other/Unknown
+                </option>
             </select>
+            
         </div>
 <!-- Dropdown menu for primary activity selection -->
         <div class="input-container">
@@ -153,7 +182,7 @@
             <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png">
         </div>
 <!-- Submit button for the form sends a POST request -->
-        <button type="submit" class="form-button" onclick="submitPost()">Post</button>
+        <button type="submit" class="form-button" >Post</button>
 
     </form>
 
