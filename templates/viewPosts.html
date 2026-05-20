@@ -12,9 +12,15 @@
 
 <!-- search area for filtering posts by keyword -->
 <form class="search-container" id="search-form" method="GET">
-    <label for="search">Search:</label>
-    <input type="text" id="search-query" name="search" placeholder="Search by keyword">
-    <button type="submit" class="form-button" >Search</button>
+    <label for="search-query">Search:</label>
+    <input
+        type="text"
+        id="search-query"
+        name="search"
+        placeholder="Search by keyword"
+        value="{{ search_query if search_query else '' }}"
+    >
+    <button type="submit" class="form-button">Search</button>
 </form>
 
 <!-- container for all post display tiles, these will be generated dynamically when database and backend are connected -->
