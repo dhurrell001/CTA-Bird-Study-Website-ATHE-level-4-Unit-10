@@ -138,19 +138,21 @@ if (newPostForm) {
 // Get the search form element by its ID
 const searchForm = document.getElementById("search-form");
 // Check if the form exists before adding event listener.
-if (searchForm) {   
-    // add event listener to search form submit event
+if (searchForm) {
+
     searchForm.addEventListener("submit", function(event) {
-        // get form values by their IDs
-        const searchQuery = document.getElementById("search-query").value;
-        // stop form submitting if validation fails
+
+        const searchQuery =
+        document.getElementById("search-query").value.trim();
+
+        // If search quey is empty, show all posts by allowing form submission.
         if (searchQuery === "") {
-            alert("Please enter a search query");
-            // prevent defaultform submission behavior
-            event.preventDefault();
             return;
         }
-    })};
+
+    });
+
+}
     // ================ delete post confirmation =======================================
     // Get delete post button by its ID
     const deletePostButton = document.getElementById("delete-post");
