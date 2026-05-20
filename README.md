@@ -109,7 +109,7 @@ Installation
 
 1. Clone the repository:
 
-git clone 
+git clone https://github.com/dhurrell001/CTA-Bird-Study-Website-ATHE-level-4-Unit-10
 
 2. Open the project folder:
 
