@@ -204,19 +204,46 @@ def newPost():
 
 @app.route("/view_posts")
 def viewPosts():
+    # get the search query from the URL parameters. If no search query use empty string.
+    search_query = request.args.get("search", "")
+
     conn = get_db_connection()
-    # execute an SQL to retrieve all posts from the posts table with the username of the user who created the post.
-    # send result ast posts to the viewPost template.
-    posts = conn.execute("""
-        SELECT posts.*, users.username
-        FROM posts
-        JOIN users ON posts.user_id = users.user_id
-        ORDER BY posts.post_id DESC
-    """).fetchall()
+    # If a seach query is passed from url, use query to search for posts in the database.
+    #  searches for matches in the location, bird species, activity, comments and username fields for keyword match.
+    if search_query:
+        posts = conn.execute("""
+            SELECT posts.*, users.username
+            FROM posts
+            JOIN users ON posts.user_id = users.user_id
+            WHERE posts.location LIKE ?
+               OR posts.bird_species LIKE ?
+               OR posts.activity LIKE ?
+               OR posts.comments LIKE ?
+               OR users.username LIKE ?
+            ORDER BY posts.post_id DESC
+        """, (
+            f"%{search_query}%",
+            f"%{search_query}%",
+            f"%{search_query}%",
+            f"%{search_query}%",
+            f"%{search_query}%"
+        )).fetchall()
+    # If no query is passed fetch all post from database.
+    else:
+        posts = conn.execute("""
+            SELECT posts.*, users.username
+            FROM posts
+            JOIN users ON posts.user_id = users.user_id
+            ORDER BY posts.post_id DESC
+        """).fetchall()
 
     conn.close()
 
-    return render_template("viewPosts.html", posts=posts)
+    return render_template(
+        "viewPosts.html",
+        posts=posts,
+        search_query=search_query
+    )
 
 # ========================== Delete posts =================================================
 
