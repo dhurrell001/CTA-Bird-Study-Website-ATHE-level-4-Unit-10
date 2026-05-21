@@ -76,7 +76,7 @@ Stores:
 - Image filename
 
 ------------------------------------------------------------
-
+```
 Project Structure
 
 CTA Bird Study Website
@@ -102,7 +102,7 @@ CTA Bird Study Website
 │   │   └── script.min.js
 │   │
 │   └── images
-
+```
 ------------------------------------------------------------
 
 Installation
@@ -115,9 +115,9 @@ git clone https://github.com/dhurrell001/CTA-Bird-Study-Website-ATHE-level-4-Uni
 
 cd CTA-Bird-Study-Website
 
-3. Install Flask:
+3. Install requirements:
 
-pip install flask
+pip install -r requirements.txt
 
 4. Run the application:
 
