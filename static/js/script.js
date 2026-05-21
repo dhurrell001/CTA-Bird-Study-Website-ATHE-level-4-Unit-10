@@ -123,7 +123,7 @@ if (newPostForm) {
         }
         // Use regular expression to validate image file extension if an image is uploaded
         if (image) {
-            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
             if (!allowedExtensions.test(image)) {
                 alert("Invalid image format. Please upload a JPG, JPEG, PNG, or GIF file.");
                 event.preventDefault();
