@@ -55,7 +55,12 @@
                     </a>
                     <!-- button sends post ID as a parameter so it can be used in SQL query -->
                     <form method="POST" action="{{ url_for('deletePost', post_id=post.post_id) }}">
-                        <button type="submit" class="form-button">Delete</button>
+                        <button
+                            type="submit"
+                            class="form-button"
+                            onclick="return confirm('Are you sure you want to delete this post?')">
+                            Delete
+                        </button>
                     </form>
                 </div>
             {% endif %}
