@@ -182,7 +182,13 @@
             <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png">
         </div>
 <!-- Submit button for the form sends a POST request -->
-        <button type="submit" class="form-button" >Post</button>
+        <button type="submit" class="form-button" >
+            {% if post %}
+                Update Post
+            {% else %}
+                Post
+            {% endif %}
+        </button>
 
     </form>
 
